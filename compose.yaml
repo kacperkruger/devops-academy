@@ -1,0 +1,75 @@
+services:
+  board-games-db:
+    image: "mongo:6.0.4"
+    restart: unless-stopped
+    volumes:
+      - board-games-db:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - board-games-db
+
+  board-games-api:
+    restart: unless-stopped
+    build:
+      dockerfile: Dockerfile.dev
+      context: "./BoardGamesApi"
+    volumes: 
+      - ./BoardGamesApi:/home/node/app
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - MONGO_HOST=board-games-db
+      - MONGO_PORT=27017
+      - MONGO_DATABASE=BoardGamesApi
+    networks:
+      - board-games-db
+      - board-games-api
+      - reverse-proxy
+    depends_on:
+      - board-games-db
+
+  board-games-frontend:
+    restart: unless-stopped
+    build:
+      dockerfile: Dockerfile.dev
+      context: "./BoardGamesApp"
+    volumes: 
+      - ./BoardGamesApp:/opt/app
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_BOARD_GAMES_API_URL=/api
+    networks:
+      - board-games-api
+      - reverse-proxy
+    depends_on:
+      - board-games-api
+
+  reverse-proxy:
+    restart: unless-stopped
+    build:
+      dockerfile: Dockerfile.dev
+      context: "./ReverseProxy"
+    ports:
+      - "80:80"
+    volumes:
+      - ./ReverseProxy:/etc/nginx/conf.d
+    networks:
+      - reverse-proxy
+    depends_on:
+     - board-games-api
+     - board-games-frontend
+
+networks:
+  board-games-db:
+    driver: bridge
+  board-games-api:
+    driver: bridge
+  reverse-proxy:
+    driver: bridge
+
+volumes:
+  board-games-db:
+
