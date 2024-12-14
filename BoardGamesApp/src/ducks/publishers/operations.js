@@ -2,12 +2,12 @@ import gameActions from './../games/actions';
 import actions from './actions';
 import axios from 'axios';
 
-const url = document.location.origin + '/api/publishers';
+const url = process.env.REACT_APP_BOARD_GAMES_API_URL + '/publishers';
 
 const getPublisherList = () => {
     return async dispatch => {
         dispatch(actions.publishersRequestStart());
-        try {
+        try { 
             const response = await axios.get(url);
             dispatch(actions.publisherList(response.data));
         } catch (error) {
