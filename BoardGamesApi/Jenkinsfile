@@ -1,5 +1,5 @@
 pipeline {
-    agent node docker
+    agent any
     environment {
         DOCKER_REPO = "kacperkruger/board-games-api"
         IMAGE_TAG = "${env.BRANCH_NAME}"
