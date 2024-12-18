@@ -33,3 +33,5 @@ mongoose
         });
     })
     .catch(error => console.error('Error connecting to MongoDB', error));
+
+module.exports = app;
