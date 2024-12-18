@@ -10,14 +10,9 @@ pipeline {
                 checkout scm
             }
         }
-        stage("Navigate to Api Dir") {
-            steps {
-                sh "cd BoardGamesApi"
-            }
-        }
         stage("Install Dependencies") {
             steps {
-                sh "npm install"
+                sh "cd BoardGamesApi && npm install"
             }
         }
         stage("Test") {
