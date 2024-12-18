@@ -51,11 +51,9 @@ services:
     restart: unless-stopped
     build:
       dockerfile: Dockerfile.dev
-      context: "./ReverseProxy"
+      context: "./ReverseProxy/dev"
     ports:
       - "80:80"
-    volumes:
-      - ./ReverseProxy:/etc/nginx/conf.d
     networks:
       - reverse-proxy
     depends_on:
