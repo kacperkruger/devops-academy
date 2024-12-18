@@ -12,7 +12,7 @@ pipeline {
         }
         stage("Install Dependencies") {
             steps {
-                sh "cd BoardGamesApi && npm install"
+                sh "ls && cd BoardGamesApi && npm install"
             }
         }
         stage("Test") {
