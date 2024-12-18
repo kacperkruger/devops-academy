@@ -12,17 +12,17 @@ pipeline {
         }
         stage("Install Dependencies") {
             steps {
-                sh "ls && cd BoardGamesApi && npm install"
+                sh "cd BoardGamesApi && npm install"
             }
         }
         stage("Test") {
             steps {
-                sh "npm test"
+                sh "cd BoardGamesApi && npm test"
             }
         }
         stage("Build Docker Image") {
             steps {
-                sh "docker build -t ${DOCKER_REPO}:${IMAGE_TAG} ."
+                sh "cd BoardGamesApi && docker build -t ${DOCKER_REPO}:${IMAGE_TAG} ."
             }
         }
         stage("Push Docker Image") {
