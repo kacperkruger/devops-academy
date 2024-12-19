@@ -1,4 +1,4 @@
-pipeline {
+node {
     agent none
     environment {
         DOCKER_REPO = "kacperkruger/board-games-reverse-proxy"
