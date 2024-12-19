@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent none
     environment {
         DOCKER_REPO = "kacperkruger/board-games-app"
         IMAGE_TAG = "${env.BRANCH_NAME}"
