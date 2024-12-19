@@ -2,13 +2,13 @@ def runPipeline(String branchName) {
     def DOCKER_REPO = "kacperkruger/board-games-api"
 
     stage("Install Dependencies") {
-        sh "cd BoardGamesApi && npm install"
+        sh "npm install"
     }
     stage("Test") {
-        sh "cd BoardGamesApi && npm test"
+        sh "npm test"
     }
     stage("Build Docker Image") {
-        sh "cd BoardGamesApi && docker build -t ${DOCKER_REPO}:${branchName} ."
+        sh "docker build -t ${DOCKER_REPO}:${branchName} ."
     }
     stage("Push Docker Image") {
         withCredentials([usernamePassword(credentialsId: 'dockerHubCreds', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
