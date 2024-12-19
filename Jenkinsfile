@@ -21,7 +21,7 @@ pipeline {
                 dir('BoardGamesApp') {
                     script {
                         def appPipeline = load 'Jenkinsfile'
-                        project2Pipeline.runPipeline(env.BRANCH_NAME)
+                        appPipeline.runPipeline(env.BRANCH_NAME)
                     }
                 }
             }
