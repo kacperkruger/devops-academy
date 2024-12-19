@@ -1,4 +1,4 @@
-pipeline {
+node {
     scmVars = checkout scm
 
     withEnv(["BRANCH_NAME=${scmVars.GIT_BRANCH}"]) {
