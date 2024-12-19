@@ -1,48 +1,24 @@
-node {
-    agent none
-    environment {
-        DOCKER_REPO = "kacperkruger/board-games-api"
-        IMAGE_TAG = "${env.BRANCH_NAME}"
+def runPipeline(String branchName) {
+    def DOCKER_REPO = "kacperkruger/board-games-api"
+
+    stage("Install Dependencies") {
+        sh "cd BoardGamesApi && npm install"
     }
-    stages {
-        stage("Checkout") {
-            steps {
-                checkout scm
-            }
-        }
-        stage("Install Dependencies") {
-            steps {
-                sh "cd BoardGamesApi && npm install"
-            }
-        }
-        stage("Test") {
-            steps {
-                sh "cd BoardGamesApi && npm test"
-            }
-        }
-        stage("Build Docker Image") {
-            steps {
-                sh "cd BoardGamesApi && docker build -t ${DOCKER_REPO}:${IMAGE_TAG} ."
-            }
-        }
-        stage("Push Docker Image") {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerHubCreds', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                    sh 'echo \"$DOCKER_PASSWORD\" | docker login -u ${DOCKER_USERNAME} --password-stdin'
-                }
-                sh "docker push ${DOCKER_REPO}:${IMAGE_TAG}"
-            }
-        }
+    stage("Test") {
+        sh "cd BoardGamesApi && npm test"
     }
-    post {
-        always {
-            sh "docker rmi ${DOCKER_REPO}:${IMAGE_TAG}"
+    stage("Build Docker Image") {
+        sh "cd BoardGamesApi && docker build -t ${DOCKER_REPO}:${branchName} ."
+    }
+    stage("Push Docker Image") {
+        withCredentials([usernamePassword(credentialsId: 'dockerHubCreds', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+            sh 'echo \"$DOCKER_PASSWORD\" | docker login -u ${DOCKER_USERNAME} --password-stdin'
         }
-        success {
-            echo "Build and push succeeded!"
-        }
-        failure {
-            echo "Build and push failed!"
-        }
+        sh "docker push ${DOCKER_REPO}:${branchName}"
+    }
+    stage("Remove Docker Image") {
+        sh "docker rmi ${DOCKER_REPO}:${branchName}"
     }
 }
+
+return this

@@ -1,38 +1,18 @@
-node {
-    agent none
-    environment {
-        DOCKER_REPO = "kacperkruger/board-games-reverse-proxy"
-        IMAGE_TAG = "${env.BRANCH_NAME}"
+def runPipeline(String branchName) {
+    def DOCKER_REPO = "kacperkruger/board-games-reverse-proxy"
+
+    stage("Build Docker Image") {
+        sh "cd ReverseProxy && docker build -t ${DOCKER_REPO}:${branchName} ."
     }
-    stages {
-        stage("Checkout") {
-            steps {
-                checkout scm
-            }
+    stage("Push Docker Image") {
+        withCredentials([usernamePassword(credentialsId: 'dockerHubCreds', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+            sh 'echo \"$DOCKER_PASSWORD\" | docker login -u ${DOCKER_USERNAME} --password-stdin'
         }
-        stage("Build Docker Image") {
-            steps {
-                sh "cd BoardGamesApp && docker build -t ${DOCKER_REPO}:${IMAGE_TAG} ."
-            }
-        }
-        stage("Push Docker Image") {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerHubCreds', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                    sh 'echo \"$DOCKER_PASSWORD\" | docker login -u ${DOCKER_USERNAME} --password-stdin'
-                }
-                sh "docker push ${DOCKER_REPO}:${IMAGE_TAG}"
-            }
-        }
+        sh "docker push ${DOCKER_REPO}:${branchName}"
     }
-    post {
-        always {
-            sh "docker rmi ${DOCKER_REPO}:${IMAGE_TAG}"
-        }
-        success {
-            echo "Build and push succeeded!"
-        }
-        failure {
-            echo "Build and push failed!"
-        }
+    stage("Remove Docker Image") {
+        sh "docker rmi ${DOCKER_REPO}:${branchName}"
     }
 }
+
+return this
