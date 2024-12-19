@@ -8,20 +8,20 @@ const ButtonList = ({ componentName, items, navigateUrl, sortValues, sortOperati
     const [sortValue, setSortValue] = useState('');
     const [sortOrder, setSortOrder] = useState('asc');
 
-    const sortItems = (sortValue, sortOrder) => {
-        if (sortValue === 'games') {
-            return sortOperation(_.orderBy(items, [(publisher) => {
-                return publisher.games.length
-            }], [sortOrder]))
-        }
-        return sortOperation(_.orderBy(items, [sortValue], [sortOrder]))
-    }
 
     useEffect(() => {
+        const sortItems = (sortValue, sortOrder) => {
+            if (sortValue === 'games') {
+                return sortOperation(_.orderBy(items, [(publisher) => {
+                    return publisher.games.length
+                }], [sortOrder]))
+            }
+            return sortOperation(_.orderBy(items, [sortValue], [sortOrder]))
+        }
         if (sortValue !== '') {
             return sortItems(sortValue, sortOrder)
         }
-    },[sortValue, sortOrder])
+    },[sortValue, sortOrder, sortOperation, items])
 
     const handleSortOrderClick = (value) => {
         if (value === 'asc') {
