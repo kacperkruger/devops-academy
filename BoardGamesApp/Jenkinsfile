@@ -42,7 +42,6 @@ pipeline {
     post {
         always {
             sh "docker rmi ${DOCKER_REPO}:${IMAGE_TAG}"
-            cleanWs()
         }
         success {
             echo "Build and push succeeded!"
