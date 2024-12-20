@@ -6,13 +6,6 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Print Git Difference') {
-            steps {
-                script {
-                    sh "git diff"
-                }
-            }
-        }
         stage('Execute Board Games API Pipeline') {
             when {
                 changeset "BoardGamesApi/**"
