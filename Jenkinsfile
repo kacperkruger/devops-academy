@@ -7,6 +7,10 @@ pipeline {
             }
         }
         stage('Execute Board Games API Pipeline') {
+            when {
+                changeset "BoardGamesApi/*.*"
+                beforeAgent true
+            }
             steps {
                 dir('BoardGamesApi') {
                     script {
@@ -17,6 +21,10 @@ pipeline {
             }
         }
         stage('Execute Board Games App Pipeline') {
+            when {
+                changeset "BoardGamesApp/*.*"
+                beforeAgent true
+            }
             steps {
                 dir('BoardGamesApp') {
                     script {
@@ -27,6 +35,10 @@ pipeline {
             }
         }
         stage('Execute Reverse Proxy Pipeline') {
+            when {
+                changeset "ReverseProxy/*.*"
+                beforeAgent true
+            }
             steps {
                 dir('ReverseProxy') {
                     script {
