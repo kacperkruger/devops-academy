@@ -13,6 +13,7 @@ import PublisherForm from './ui/publishers/PublisherForm';
 import { ConfirmProvider } from 'material-ui-confirm';
 
 function App() {
+  console.log('change')
   return (
     <ConfirmProvider>
       <div className="App">
