@@ -35,5 +35,4 @@ function App() {
   );
 }
 
-console.log("test")
 export default App;
