@@ -6,10 +6,16 @@ pipeline {
                 checkout scm
             }
         }
+        stage('Print Git Difference') {
+            steps {
+                script {
+                    sh "git diff"
+                }
+            }
+        }
         stage('Execute Board Games API Pipeline') {
             when {
-                changeset "BoardGamesApi/*.*"
-                beforeAgent true
+                changeset "BoardGamesApi/**"
             }
             steps {
                 dir('BoardGamesApi') {
@@ -22,8 +28,7 @@ pipeline {
         }
         stage('Execute Board Games App Pipeline') {
             when {
-                changeset "BoardGamesApp/*.*"
-                beforeAgent true
+                changeset "BoardGamesApp/**"
             }
             steps {
                 dir('BoardGamesApp') {
@@ -36,8 +41,7 @@ pipeline {
         }
         stage('Execute Reverse Proxy Pipeline') {
             when {
-                changeset "ReverseProxy/*.*"
-                beforeAgent true
+                changeset "ReverseProxy/**"
             }
             steps {
                 dir('ReverseProxy') {
