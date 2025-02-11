@@ -10,17 +10,24 @@ def runPipeline(String branchName) {
     stage("Test") {
         sh "npm test"
     }
-    stage("Build Docker Image") {
-        sh "docker build -t ${DOCKER_REPO}:${branchName} ."
-    }
-    stage("Push Docker Image") {
-        withCredentials([usernamePassword(credentialsId: 'dockerHubCreds', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-            sh 'echo \"$DOCKER_PASSWORD\" | docker login -u ${DOCKER_USERNAME} --password-stdin'
+    staeg("Build and Push Docker Image") {
+        when {
+            branch 'main'
         }
-        sh "docker push ${DOCKER_REPO}:${branchName}"
-    }
-    stage("Remove Docker Image") {
-        sh "docker rmi ${DOCKER_REPO}:${branchName}"
+        stages {
+            stage("Build Docker Image") {
+                sh "docker build -t ${DOCKER_REPO}:${branchName} ."
+            }
+            stage("Push Docker Image") {
+                withCredentials([usernamePassword(credentialsId: 'dockerHubCreds', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    sh 'echo \"$DOCKER_PASSWORD\" | docker login -u ${DOCKER_USERNAME} --password-stdin'
+                }
+                sh "docker push ${DOCKER_REPO}:${branchName}"
+            }
+            stage("Remove Docker Image") {
+                sh "docker rmi ${DOCKER_REPO}:${branchName}"
+            }
+        }
     }
 }
 
