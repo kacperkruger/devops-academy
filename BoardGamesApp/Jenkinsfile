@@ -5,10 +5,14 @@ def runPipeline(String branchName) {
         sh "npm install"
     }
     stage("Build") {
-        sh "npm run build"
+        withChecks("Build", includeStages: true) {
+            sh "npm run build"
+        }
     }
     stage("Test") {
-        sh "npm test"
+        withChecks("Test", includeStages: true) {
+            sh "npm test"
+        }
     }
     staeg("Build and Push Docker Image") {
         when {

@@ -5,7 +5,9 @@ def runPipeline(String branchName) {
         sh "npm install"
     }
     stage("Test") {
-        sh "npm test"
+        withChecks("Test", includeStages: true) {
+            sh "npm test"
+        }
     }
     stage("Build and Push Docker Image") {
         when {
