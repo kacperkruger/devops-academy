@@ -5,12 +5,12 @@ def runPipeline(String branchName) {
         sh "npm install"
     }
     stage("Build") {
-        withChecks("Build", includeStage: true) {
+        withChecks("Build") {
             sh "npm run build"
         }
     }
     stage("Test") {
-        withChecks("Test", includeStage: true) {
+        withChecks("Test") {
             sh "npm test"
         }
     }
