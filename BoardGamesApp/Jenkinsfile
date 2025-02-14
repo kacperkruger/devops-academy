@@ -2,16 +2,22 @@ def runPipeline(String branchName) {
     def DOCKER_REPO = "kacperkruger/board-games-app"
 
     stage("Install Dependencies") {
-        sh "npm install"
+        docker.image('node:18-alpine').inside {
+            sh "npm install"
+        }
     }
     stage("Build") {
         withChecks("Build") {
-            sh "npm run build"
+            docker.image('node:18-alpine').inside {
+                sh "npm run build"
+            }
         }
     }
     stage("Test") {
         withChecks("Test") {
-            sh "npm test"
+            docker.image('node:18-alpine').inside {
+                sh "npm test"
+            }
         }
     }
     stage("Build and Push Docker Image") {
