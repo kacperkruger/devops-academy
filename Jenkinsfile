@@ -15,7 +15,7 @@ pipeline {
                     script {
                         def apiPipeline = load 'Jenkinsfile'
 
-                        withChecks('Run API Pipeline', includeStages: true) {
+                        withChecks('Run API Pipeline', includeStage: true) {
                             apiPipeline.runPipeline(env.BRANCH_NAME)
                         }
                     }
@@ -30,7 +30,7 @@ pipeline {
                 dir('BoardGamesApp') {
                     script {
                         def appPipeline = load 'Jenkinsfile'
-                        withChecks('Run App Pipeline', includeStages: true) {
+                        withChecks('Run App Pipeline', includeStage: true) {
                             appPipeline.runPipeline(env.BRANCH_NAME)
                         }
                     }
@@ -63,4 +63,3 @@ pipeline {
         }
     }
 }
-
