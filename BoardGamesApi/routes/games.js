@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+console.log("test");
+
 const Game = require('../models/Game');
 const Publisher = require('../models/Publisher');
 
