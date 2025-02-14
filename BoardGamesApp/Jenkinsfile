@@ -14,7 +14,7 @@ def runPipeline(String branchName) {
             sh "npm test"
         }
     }
-    staeg("Build and Push Docker Image") {
+    stage("Build and Push Docker Image") {
         if (env.BRANCH_NAME == 'main') {
             steps {
                 step("Build Docker Image") {
