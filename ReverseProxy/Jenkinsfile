@@ -2,7 +2,7 @@ def runPipeline(String branchName) {
     def DOCKER_REPO = "kacperkruger/board-games-reverse-proxy"
 
     stage("Build and Push Docker Image") {
-        if (env.BRANCH_NAME == 'main') {
+        if (branchName == 'main' || branchName == 'develop' || branchName == 'staging') {
             steps {
                 step("Build Docker Image") {
                     sh "docker build -t ${DOCKER_REPO}:${branchName} ."
