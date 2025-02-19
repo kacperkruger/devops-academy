@@ -6,6 +6,9 @@ services:
       - board-games-db:/data/db
     ports:
       - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
     networks:
       - board-games-db
 
@@ -19,10 +22,10 @@ services:
     ports:
       - "4000:4000"
     environment:
-      - PORT=4000
       - MONGO_HOST=board-games-db
       - MONGO_PORT=27017
-      - MONGO_DATABASE=BoardGamesApi
+      - MONGO_USER=admin
+      - MONGO_PASS=password
     networks:
       - board-games-db
       - board-games-api
@@ -40,7 +43,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - REACT_APP_BOARD_GAMES_API_URL=/api
+      - REACT_APP_BOARD_GAMES_API_URL=http://board-games-api/
     networks:
       - board-games-api
       - reverse-proxy

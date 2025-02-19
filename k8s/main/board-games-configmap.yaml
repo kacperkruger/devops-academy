@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: board-games-configmap
+  namespace: main
+data:
+  database_url: "mongo-service"
+  api_url: board-games-api-service
