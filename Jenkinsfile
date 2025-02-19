@@ -50,21 +50,18 @@ pipeline {
                 }
             }
         }
-        stage("Print Branch Name") {
-            steps {
-                echo "Branch Name: ${env.BRANCH_NAME}"
-            }
-        }
         stage('Deploy to k8s') {
             when {
-                expression {
-                    env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'staging'
+                anyOf {
+                    branch 'main'
+                    branch 'develop'
+                    branch 'staging'
                 }
             }
             steps {
                 dir('k8s/' + env.BRANCH_NAME) {
-                    withCredentials([string(credentialsId: 'new_minikube_token', variable: 'api_token')]) {
-                        sh 'docker run bitnami/kubectl:1.32.2 --token $api_token --server https://192.168.49.2:8443  --insecure-skip-tls-verify=true apply -f .'
+                    withCredentials([string(credentialsId: 'my_kubernetes', variable: 'api_token')]) {
+                        sh 'kubectl --token $api_token --server https://192.168.49.2:8443  --insecure-skip-tls-verify=true apply -f .'
                     }
                 }
             }
