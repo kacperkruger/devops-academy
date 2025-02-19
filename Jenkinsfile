@@ -50,10 +50,15 @@ pipeline {
                 }
             }
         }
+        stage("Print Branch Name") {
+            steps {
+                echo "Branch Name: ${env.BRANCH_NAME}"
+            }
+        }
         stage('Deploy to k8s') {
             when {
                 expression {
-                    return env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'staging'
+                    env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'staging'
                 }
             }
             steps {
