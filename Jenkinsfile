@@ -58,10 +58,10 @@ pipeline {
                     branch 'staging'
                 }
             }
-            docker {
-                    image 'bitname/kubectl:1.32.2'
-            }
             steps {
+                docker {
+                        image 'bitname/kubectl:1.32.2'
+                }
                 dir('k8s/' + env.BRANCH_NAME) {
                     withCredentials([string(credentialsId: 'my_kubernetes', variable: 'api_token')]) {
                         sh 'kubectl --token $api_token --server https://192.168.49.2:8443  --insecure-skip-tls-verify=true apply -f .'
