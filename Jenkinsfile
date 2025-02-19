@@ -53,7 +53,7 @@ pipeline {
         stage('Deploy to k8s') {
             agent {
                 docker {
-                    image 'bitname/kubectl:1.32.2'
+                    image 'bitnami/kubectl:1.32.2'
                     reuseNode true
                 }
             }
