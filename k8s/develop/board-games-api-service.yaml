@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: board-games-api-service
+spec:
+  type: ClusterIP
+  selector:
+    app: board-games-api
+    type: backend
+  ports:
+  - port: 4000
+    targetPort: 4000
