@@ -1,5 +1,8 @@
 FROM node:18-alpine
 
+ENV PORT=4000
+ENV NODE_ENV=production
+
 WORKDIR /app
 
 COPY package.json package-lock.json ./
