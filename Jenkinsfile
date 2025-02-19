@@ -51,12 +51,6 @@ pipeline {
             }
         }
         stage('Deploy to k8s') {
-            agent {
-                docker {
-                    image 'bitnami/kubectl:1.32.2'
-                    reuseNode true
-                }
-            }
             when {
                 anyOf {
                     branch 'main'
@@ -66,8 +60,8 @@ pipeline {
             }
             steps {
                 dir('k8s/' + env.BRANCH_NAME) {
-                    withCredentials([string(credentialsId: 'my_kubernetes', variable: 'api_token')]) {
-                        sh 'kubectl --token $api_token --server https://192.168.49.2:8443  --insecure-skip-tls-verify=true apply -f .'
+                    withCredentials([string(credentialsId: 'new_minikube_token', variable: 'api_token')]) {
+                        sh 'docker run bitnami/kubectl:1.32.2 --token $api_token --server https://192.168.49.2:8443  --insecure-skip-tls-verify=true apply -f .'
                     }
                 }
             }
