@@ -2,7 +2,7 @@ import actions from './actions';
 import publisherActions from './../publishers/actions';
 import axios from 'axios';
 
-const url = process.env.REACT_APP_BOARD_GAMES_API_URL + '/games';
+const url = '/api/games';
 
 const getGameList = () => {
     return async dispatch => {
