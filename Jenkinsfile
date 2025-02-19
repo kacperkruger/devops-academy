@@ -53,7 +53,7 @@ pipeline {
         stage('Deploy to k8s') {
             when {
                 expression {
-                    env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'staging'
+                    return env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'staging'
                 }
             }
             steps {
