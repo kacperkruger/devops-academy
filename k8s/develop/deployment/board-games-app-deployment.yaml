@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: board-games-app-deployment
+  namespace: develop
+  labels:
+    app: board-games-app
+    type: frontend
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: board-games-app
+      type: frontend
+
+  template:
+    metadata:
+      name: board-games-app-pod
+      labels:
+        app: board-games-app
+        type: frontend
+
+    spec:
+      containers:
+      - name: board-games-app-container
+        image: kacperkruger/board-games-app:develop
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
