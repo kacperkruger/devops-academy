@@ -59,7 +59,7 @@ pipeline {
                 }
             }
             steps {
-                dir('k8s/' + env.BRANCH_NAME) {
+                dir('k8s/' + env.BRANCH_NAME + '/deployment') {
                     withCredentials([string(credentialsId: 'new_minikube_token', variable: 'api_token')]) {
                         sh 'kubectl --token $api_token --server https://192.168.49.2:8443  --insecure-skip-tls-verify=true rollout restart -f .'
                     }
