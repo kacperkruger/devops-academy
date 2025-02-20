@@ -22,19 +22,17 @@ def runPipeline(String branchName) {
     }
     stage("Build and Push Docker Image") {
         if (branchName == 'main' || branchName == 'develop' || branchName == 'staging') {
-            steps {
-                step("Build Docker Image") {
-                    sh "docker build -t ${DOCKER_REPO}:${branchName} ."
+            stage("Build Docker Image") {
+                sh "docker build -t ${DOCKER_REPO}:${branchName} ."
+            }
+            stage("Push Docker Image") {
+                withCredentials([usernamePassword(credentialsId: 'dockerHubCreds', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    sh 'echo \"$DOCKER_PASSWORD\" | docker login -u ${DOCKER_USERNAME} --password-stdin'
                 }
-                step("Push Docker Image") {
-                    withCredentials([usernamePassword(credentialsId: 'dockerHubCreds', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                        sh 'echo \"$DOCKER_PASSWORD\" | docker login -u ${DOCKER_USERNAME} --password-stdin'
-                    }
-                    sh "docker push ${DOCKER_REPO}:${branchName}"
-                }
-                step("Remove Docker Image") {
-                    sh "docker rmi ${DOCKER_REPO}:${branchName}"
-                }
+                sh "docker push ${DOCKER_REPO}:${branchName}"
+            }
+            stage("Remove Docker Image") {
+                sh "docker rmi ${DOCKER_REPO}:${branchName}"
             }
         }
     }

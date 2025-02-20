@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: board-games-api-deployment
+  namespace: main
+  labels:
+    app: board-games-api
+    type: backend
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: board-games-api
+      type: backend
+
+  template:
+    metadata:
+      name: board-games-api-pod
+      labels:
+        app: board-games-api
+        type: backend
+
+    spec:
+      containers:
+      - name: board-games-api-container
+        image: kacperkruger/board-games-api:main
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 4000
+        env:
+        - name: MONGO_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: board-games-configmap
+              key: database_url
+        - name: MONGO_PORT
+          value: "27017"
+        - name: MONGO_DATABASE
+          value: "BoardGamesApi"
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
