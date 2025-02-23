@@ -3,7 +3,7 @@ def runPipeline(String branchName) {
         docker.image('alpine/curl:8.12.1').inside {
             sh "curl -LO https://dl.k8s.io/release/v1.32.0/bin/linux/amd64/kubectl"
             sh "chmod +x ./kubectl"
-            sh '/.kubectl --token $api_token --server https://192.168.49.2:8443  --insecure-skip-tls-verify=true rollout restart -f ./' branchName + '/deployment'
+            sh './kubectl --token $api_token --server https://192.168.49.2:8443  --insecure-skip-tls-verify=true rollout restart -f ./' branchName + '/deployment'
         }
     }
 }
