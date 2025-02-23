@@ -1,0 +1,15 @@
+def runPipeline(String branchName) {
+    stage("Install kubectl") {
+        docker.image('alpine/culr:8.12.1') {
+            sh "curl -LO https://dl.k8s.io/release/v1.32.0/bin/linux/amd64/kubectl"
+            sh "chmod +x ./kubectl"
+            sh "mv ./kubectl /usr/local/bin/kubectl"
+        }
+    }
+    stage("Deploy application") {
+        dir(branchName) {
+            withCredentials([string(credentialsId: 'new_minikube_token', variable: 'api_token')]) {
+                sh 'kubectl --token $api_token --server https://192.168.49.2:8443  --insecure-skip-tls-verify=true rollout restart -f ./deployment'
+        }
+    }
+}
