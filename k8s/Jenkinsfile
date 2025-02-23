@@ -13,3 +13,5 @@ def runPipeline(String branchName) {
         }
     }
 }
+
+return this
