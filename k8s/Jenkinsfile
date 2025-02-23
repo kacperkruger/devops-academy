@@ -1,6 +1,6 @@
 def runPipeline(String branchName) {
     stage("Install kubectl") {
-        docker.image('alpine/culr:8.12.1').inside {
+        docker.image('alpine/curl:8.12.1').inside {
             sh "curl -LO https://dl.k8s.io/release/v1.32.0/bin/linux/amd64/kubectl"
             sh "chmod +x ./kubectl"
             sh "mv ./kubectl /usr/local/bin/kubectl"
