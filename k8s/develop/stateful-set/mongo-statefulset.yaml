@@ -34,8 +34,9 @@ spec:
       kind: PersistentVolumeClaim
       metadata:
         name: mongo-pvc
+        
       spec:
-        storageClassName: manual
+        storageClassName: manual-develop
         accessModes:
           - ReadWriteOnce
         resources:
