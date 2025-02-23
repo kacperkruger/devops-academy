@@ -63,7 +63,6 @@ pipeline {
                     dir('k8s') {
                         def deployPipeline = load 'Jenkinsfile'
                         deployPipeline.runPipeline(env.BRANCH_NAME)
-                        }
                     }
                 }
             }
