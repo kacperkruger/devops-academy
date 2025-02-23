@@ -60,8 +60,10 @@ pipeline {
             }
             steps {
                 dir('k8s') {
-                    def deployPipeline = load 'Jenkinsfile'
-                    deployPipeline.runPipeline(env.BRANCH_NAME)
+                    script {
+                        def deployPipeline = load 'Jenkinsfile'
+                        deployPipeline.runPipeline(env.BRANCH_NAME)
+                    }
                 }
             }
         }
