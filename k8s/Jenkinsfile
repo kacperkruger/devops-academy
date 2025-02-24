@@ -8,6 +8,7 @@ def runPipeline(String branchName) {
             withChecks("Deploying application") {
                 withCredentials([string(credentialsId: 'new_minikube_token', variable: 'api_token')]) {
                     sh './kubectl --token $api_token --server https://192.168.49.2:8443  --insecure-skip-tls-verify=true rollout restart -f ./' + branchName + '/deployment'
+                    sh './kubectl --token $api_token --server htttps://192.168.49.2:8443 rollout status -f ' + branchName + '/deployment --timeout=300s'
                 }
             }
         }
