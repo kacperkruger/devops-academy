@@ -1,5 +1,4 @@
 def runPipeline(String branchName) {
-    emailext(body: 'Deployment started on environment: ' + branchName.toUpperCase(), subject: 'Deployment started', to: 'kacper.kruger1@gmail.com')
     docker.image('alpine/curl:8.12.1').withRun('--net="k8s"') { c ->
         stage("Install kubectl") {
             sh "curl -LO https://dl.k8s.io/release/v1.32.0/bin/linux/amd64/kubectl"
@@ -14,7 +13,6 @@ def runPipeline(String branchName) {
             }
         }
     }
-    emailext(body: 'Deployment finished on environment: ' + branchName.toUpperCase(), subject: 'Deployment finished', to: 'kacper.kruger1@gmail.com')
 }
 
 return this

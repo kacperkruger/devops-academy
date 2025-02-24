@@ -60,23 +60,29 @@ pipeline {
             }
             steps {
                 dir('k8s') {
-                    script {
-                        def deployPipeline = load 'Jenkinsfile'
-                        deployPipeline.runPipeline(env.BRANCH_NAME)
+                    emailext(body: 'Deployment started on environment: ' + branchName.toUpperCase(), subject: 'Deployment started', to: 'kacper.kruger1@gmail.com')
+                    try {
+                        script {
+                            def deployPipeline = load 'Jenkinsfile'
+                            deployPipeline.runPipeline(env.BRANCH_NAME)
+                        }
+                        emailext(body: 'Deployment finished with SUCCESS status on environment: ' + branchName.toUpperCase(), subject: 'Deployment finished', to: 'kacper.kruger1@gmail.com')
+                    } catch (Exception e) {
+                        emailext(body: 'Deployment finished with FAILURE status on environment: ' + branchName.toUpperCase(), subject: 'Deployment finished', to: 'kacper.kruger1@gmail.com'
                     }
                 }
             }
         }
-    }
-    post {
-        always {
-            cleanWs()
-        }
-        success {
-            echo 'STATUS: Success'
-        }
-        failure {
-            echo 'STATUS: Failure'
+        post {
+            always {
+                cleanWs()
+            }
+            success {
+                echo 'STATUS: Success'
+            }
+            failure {
+                echo 'STATUS: Failure'
+            }
         }
     }
 }
