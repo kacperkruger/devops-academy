@@ -13,6 +13,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 
+console.log("Hello World");
+
 const store = createStore(
   combineReducers({
     games: gamesReducer,

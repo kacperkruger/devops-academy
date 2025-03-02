@@ -5,6 +5,8 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 
+console.log("Hello World");
+
 const games = require('./routes/games');
 const publishers = require('./routes/publishers')
 app.use('/games', games);
