@@ -61,15 +61,15 @@ pipeline {
             steps {
                 dir('k8s') {
                     emailext(body: 'Deployment started on environment: ' + branchName.toUpperCase(), subject: 'Deployment started', to: 'kacper.kruger1@gmail.com')
-                    try {
+                    def String status = 'FAILURE'
+                    catchError {
                         script {
                             def deployPipeline = load 'Jenkinsfile'
                             deployPipeline.runPipeline(env.BRANCH_NAME)
+                            status = 'SUCCESS'
                         }
-                        emailext(body: 'Deployment finished with SUCCESS status on environment: ' + branchName.toUpperCase(), subject: 'Deployment finished', to: 'kacper.kruger1@gmail.com')
-                    } catch (Exception e) {
-                        emailext(body: 'Deployment finished with FAILURE status on environment: ' + branchName.toUpperCase(), subject: 'Deployment finished', to: 'kacper.kruger1@gmail.com')
                     }
+                    emailext(body: 'Deployment finished with ' + status + ' status on environment: ' + branchName.toUpperCase(), subject: 'Deployment finished', to: 'kacper.kruger1@gmail.com')
                 }
             }
         }
