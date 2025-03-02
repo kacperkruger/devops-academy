@@ -74,16 +74,16 @@ pipeline {
                 }
             }
         }
-        post {
-            always {
-                cleanWs()
-            }
-            success {
-                echo 'STATUS: Success'
-            }
-            failure {
-                echo 'STATUS: Failure'
-            }
+    }
+    post {
+        always {
+            cleanWs()
+        }
+        success {
+            echo 'STATUS: Success'
+        }
+        failure {
+            echo 'STATUS: Failure'
         }
     }
 }
