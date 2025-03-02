@@ -68,7 +68,7 @@ pipeline {
                         }
                         emailext(body: 'Deployment finished with SUCCESS status on environment: ' + branchName.toUpperCase(), subject: 'Deployment finished', to: 'kacper.kruger1@gmail.com')
                     } catch (Exception e) {
-                        emailext(body: 'Deployment finished with FAILURE status on environment: ' + branchName.toUpperCase(), subject: 'Deployment finished', to: 'kacper.kruger1@gmail.com'
+                        emailext(body: 'Deployment finished with FAILURE status on environment: ' + branchName.toUpperCase(), subject: 'Deployment finished', to: 'kacper.kruger1@gmail.com')
                     }
                 }
             }
