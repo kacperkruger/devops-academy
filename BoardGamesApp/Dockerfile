@@ -7,7 +7,7 @@ COPY . .
 RUN npm run build
  
 # Production Stage
-FROM nginxinc/nginx-unprivileged
+FROM nginxinc/nginx-unprivileged:alpine3.21
 COPY --from=build /app/build /usr/share/nginx/html
 EXPOSE 8080
 USER nginx
