@@ -7,7 +7,8 @@ COPY . .
 RUN npm run build
  
 # Production Stage
-FROM nginx:stable-alpine
+FROM nginxinc/nginx-unprivileged
 COPY --from=build /app/build /usr/share/nginx/html
-EXPOSE 80
+EXPOSE 8080
+USER nginx
 CMD ["nginx", "-g", "daemon off;"]
