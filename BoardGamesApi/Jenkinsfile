@@ -13,6 +13,12 @@ def runPipeline(String branchName) {
             }
         }
     }
+    stage('SonarQube Analysis') {
+        def scannerHome = tool 'SonarScanner';
+        withSonarQubeEnv() {
+            sh "${scannerHome}/bin/sonar-scanner"
+        }
+    }
     stage("Build and Push Docker Image") {
         if (branchName == 'main' || branchName == 'develop' || branchName == 'staging') {
             stage("Build Docker Image") {
