@@ -20,10 +20,15 @@ def runPipeline(String branchName) {
             }
         }
     }
-    stage('SonarQube Analysis') {
+    stage("SonarQube Analysis") {
         def scannerHome = tool 'SonarScanner';
         withSonarQubeEnv(installationName: 'sq1') {
             sh "${scannerHome}/bin/sonar-scanner"
+        }
+    }
+    stage("Quality Gate") {
+        timeout(time: 2, unit: 'MINUTES') {
+            waitForQualityGate abortPipeline: true
         }
     }
     stage("Build and Push Docker Image") {

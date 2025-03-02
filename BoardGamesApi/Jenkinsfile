@@ -19,6 +19,11 @@ def runPipeline(String branchName) {
             sh "${scannerHome}/bin/sonar-scanner"
         }
     }
+    stage("Quality Gate") {
+        timeout(time: 2, unit: 'MINUTES') {
+            waitForQualityGate abortPipeline: true
+        }
+    }
     stage("Build and Push Docker Image") {
         if (branchName == 'main' || branchName == 'develop' || branchName == 'staging') {
             stage("Build Docker Image") {
