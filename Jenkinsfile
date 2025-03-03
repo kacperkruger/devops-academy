@@ -66,7 +66,7 @@ pipeline {
                     catchError {
                         script {
                             def deployPipeline = load 'Jenkinsfile'
-                            deployPipeline.runPipeline(env)
+                            deployPipeline.runPipeline()
                             deployStatus = 'SUCCESS'
                         }
                     }
